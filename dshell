@@ -37,6 +37,7 @@ if __name__ == '__main__':
         except (EOFError, KeyboardInterrupt):
             print 'bye'
             sys.exit(0)
-        if not word.strip():
+        word = word.strip()
+        if not word:
             continue
         sp.call(['dict', word])
