@@ -23,7 +23,7 @@ class Completer:
             self.prefix = prefix
             if index < len(self.ans):
                 return self.ans[index]
-            return None<F5>
+            return None
         except:
             print traceback.format_exc()
 
