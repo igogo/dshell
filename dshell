@@ -1,19 +1,42 @@
 #!/usr/bin/env python
 
 import subprocess as sp
-import sys
-import readline
+import sys, readline, traceback
 
-# TODO: maybe add completion
+class Completer:
+    def __init__(self):
+        wordsfile = '/usr/share/dict/words'
+        try:
+            with open(wordsfile) as f:
+                self.words = [s.strip() for s in f]
+        except IOError:
+            print "Warning: Failed to read words file '{}'. Completion won't work.".format(wordsfile)
+            self.words = []
+        self.prefix = None
+        self.ans = []
 
-readline.parse_and_bind('tab: complete')
+    def complete(self, prefix, index):
+        try:
+            if self.prefix != prefix:
+                self.ans = [w for w in self.words if w.startswith(prefix)]
 
-while True:
-    try:
-        word = raw_input('d> ')
-    except (EOFError, KeyboardInterrupt):
-        print 'bye'
-        sys.exit(0)
-    if not word.strip():
-        continue
-    sp.call(['dict', word])
+            self.prefix = prefix
+            if index < len(self.ans):
+                return self.ans[index]
+            return None<F5>
+        except:
+            print traceback.format_exc()
+
+if __name__ == '__main__':
+    readline.parse_and_bind('tab: complete')
+    readline.set_completer(Completer().complete)
+
+    while True:
+        try:
+            word = raw_input('d> ')
+        except (EOFError, KeyboardInterrupt):
+            print 'bye'
+            sys.exit(0)
+        if not word.strip():
+            continue
+        sp.call(['dict', word])
