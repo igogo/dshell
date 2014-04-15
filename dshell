@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import subprocess as sp
 import sys, readline, traceback
@@ -10,7 +10,7 @@ class Completer:
             with open(wordsfile) as f:
                 self.words = [s.strip() for s in f]
         except IOError:
-            print "Warning: Failed to read words file '{}'. Completion won't work.".format(wordsfile)
+            print("Warning: Failed to read words file '{}'. Completion won't work.".format(wordsfile))
             self.words = []
         self.prefix = None
         self.ans = []
@@ -25,7 +25,7 @@ class Completer:
                 return self.ans[index]
             return None
         except:
-            print traceback.format_exc()
+            print(traceback.format_exc())
 
 if __name__ == '__main__':
     readline.parse_and_bind('tab: complete')
@@ -33,9 +33,9 @@ if __name__ == '__main__':
 
     while True:
         try:
-            word = raw_input('d> ')
+            word = input('d> ')
         except (EOFError, KeyboardInterrupt):
-            print 'bye'
+            print('bye')
             sys.exit(0)
         word = word.strip()
         if not word:
