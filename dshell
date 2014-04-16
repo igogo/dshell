@@ -16,7 +16,7 @@ class Completer:
         self.ans = []
 
     def complete(self, prefix, index):
-        try:
+        try: # catch all exceptions here, because otherwise readline would hide them
             if self.prefix != prefix:
                 self.ans = [w for w in self.words if w.startswith(prefix)]
 
@@ -25,7 +25,7 @@ class Completer:
                 return self.ans[index]
             return None
         except:
-            print(traceback.format_exc())
+            traceback.print_exc()
 
 if __name__ == '__main__':
     readline.parse_and_bind('tab: complete')
