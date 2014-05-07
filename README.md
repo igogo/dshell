@@ -1,3 +1,4 @@
-dshell is a dict shell.
+dshell
+===
 
-That is, a simple command prompt `dict` wrapper. Supports tab-completion.
+Dshell is a dict shell. That is, a simple command prompt `dict` wrapper. Supports tab-completion.
