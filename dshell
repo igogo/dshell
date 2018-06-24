@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import subprocess as sp
-import sys, readline, traceback
+import sys, readline, traceback, os, re
 
 class Completer:
     def __init__(self):
@@ -16,7 +16,7 @@ class Completer:
         self.ans = []
 
     def complete(self, prefix, index):
-        try: # catch all exceptions here, because otherwise readline would hide them
+        try:
             if self.prefix != prefix:
                 self.ans = [w for w in self.words if w.startswith(prefix)]
 
@@ -25,11 +25,12 @@ class Completer:
                 return self.ans[index]
             return None
         except:
-            traceback.print_exc()
+            print traceback.format_exc()
 
 if __name__ == '__main__':
     readline.parse_and_bind('tab: complete')
     readline.set_completer(Completer().complete)
+    log_filename = os.path.expanduser('~/dshell_log')
 
     while True:
         try:
@@ -40,4 +41,14 @@ if __name__ == '__main__':
         word = word.strip()
         if not word:
             continue
-        sp.call(['dict', word])
+
+        dictproc = sp.Popen(['dict', word], stdout=sp.PIPE)
+        response = dictproc.communicate()[0]
+        print response
+        m = re.search('{}'.format(word), response)
+        if not m:
+#            print 'Failed to match, skipping logging'
+            continue
+        card = response[m.start():]
+        with open(log_filename, 'a') as f:
+            f.write('{}\t"{}"\n'.format(word, card.replace('\n','<br>').replace('\t', '  ')))
